@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Bootstrap Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!--url to import files using url_for library in href-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+
+
+	{% if title_provided %}
+		<title>{{ title_provided }}</title>
+	{% else %}
+		<title>Connect 👋</title>
+	{% endif %}
+</head>
+<body>
+	<video autoplay muted loop id="myVideo"><source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4"></video>
+	<header class="site-header">
+	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+	    <div class="container">
+	      <a class="navbar-brand mr-4" href="/">Let's Connect 👋</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="navbar-toggler-icon"></span>
+	      </button>
+	      <div class="collapse navbar-collapse" id="navbarToggle">
+	        <div class="navbar-nav mr-auto">
+	          <a class="nav-item nav-link" href="{{ url_for('home') }}">Memes</a>
+	          <a class="nav-item nav-link" href="{{ url_for('memories') }}">Memories</a>
+	          <a class="nav-item nav-link" href="{{ url_for('about') }}">Meet us</a>
+	          <a href='https://discord.gg/z2edCsEY'><img alt='Join Our Discord Server' height='40' width='139' src='https://wowpug.net/img/join_discord.png'></a>..
+	          <a href='https://wa.me/9999999999?text=urlencodedtext'><img alt='Add me!' height='40' width='40' src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/WhatsApp_logo-color-vertical.svg/2048px-WhatsApp_logo-color-vertical.svg.png'></a>..
+	          <a href='https://rakesh-bairwa.github.io/farwell/index.html'><img alt='Back to Party 🥳' height='40' width='140' src='https://stylecaster.com/wp-content/uploads/2019/10/party-theme-ideas.gif'></a>
+	        </div>
+	        <!-- Navbar Right Side -->
+	        <div class="navbar-nav">
+	          {% if current_user.is_authenticated %}
+	          	<a class="nav-item nav-link" href="{{ url_for('new_post') }}">New Post</a>
+	          	<a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
+	          	<a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+	          {% else %}
+	          	<a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+	          	<a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+	          {% endif %}
+	        </div>
+	      </div>
+	    </div>
+	  </nav>
+	</header>
+	<main role="main" class="container">
+	  <div class="row">
+	    
+	    <div class="col-md-8">
+
+	    	{% with messages = get_flashed_messages(with_categories = true) %}
+	    		{% if messages %}
+	    			{% for category, message in messages %}
+	    				<div class="alert alert-{{ category }}">{{ message }}</div>
+	    			{% endfor %}
+	    		{% endif %}
+	    	{% endwith %}
+	    	{% block content %}{% endblock %}
+	    </div>
+
+	    <div class="col-md-4">
+	      <div class="content-section">
+	          <ul class="list-group">
+	          <center><h5>Feeds</h5><center>
+	          <iframe src="https://free.timeanddate.com/clock/i8dwux80/n176/tlin/fn6/fs16/fc09f/tc000/ftb/bas2/bat1/bacfff/pa8/tt0/tw1/th1/ta1/tb4" frameborder="0" width="310" height="58"></iframe>
+	           <iframe name="f13895c945d5a1a" data-testid="fb:page Facebook Social Plugin" 
+		   	title="fb:page Facebook Social Plugin" allowtransparency="true" allowfullscreen="true" scrolling="no" 
+		   	allow="encrypted-media" style="border: medium none; visibility: visible; width: 310px; height: 500px;" 
+		   	src="https://www.facebook.com/v3.2/plugins/page.php?adapt_container_width=true&amp;app_id=1690104724371576&amp;
+		   	container_width=468&amp;hide_cover=false&amp;href=https%3A%2F%2Fwww.facebook.com%2FNITT.Official%2F&amp;
+		   	locale=en_GB&amp;sdk=joey&amp;show_facepile=true&amp;small_header=false&amp;tabs=timeline" 
+		   	class="" width="1000px" height="1000px" frameborder="0">
+		    </iframe>
+	           <a class="twitter-timeline" data-height="400" href="https://twitter.com/ReachNITT?ref_src=twsrc%5Etfw">Tweets by ReachNITT</a> 		   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+	          </ul>
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	</main>
+	
+	<!-- Optional JavaScript for Bootstrap-->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
