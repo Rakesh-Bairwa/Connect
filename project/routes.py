@@ -103,7 +103,7 @@ def account():
 	return render_template('account.html', title = 'Account', image_file=image_file, form=form)
 
 @app.route("/post/new", methods=['GET', 'POST'])
-@login_required
+#@login_required
 def new_post():
 	form = PostForm()
 	photo_path = None # creata a copy of uploaded form image & store in static/profile_pics
