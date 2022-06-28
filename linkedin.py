@@ -1,3 +1,8 @@
+# This code is already compilled & result is been stored inside result.csv which later renamed to linkedinScrapped.csv
+# & I also clean that csv according to my requirements. So if want to recompile uncomment given code & run it.
+# Since it's a crawler which works over 100's of linkedin profile page so it take time to compile it.
+
+"""
 from selenium import webdriver
 import time
 import requests
@@ -116,3 +121,4 @@ df.to_csv('result.csv', index=False)
 
 print(".................Done Scraping!.................	")
 driver.quit()
+"""
