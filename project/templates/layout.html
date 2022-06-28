@@ -73,6 +73,7 @@
 	      <div class="content-section">
 	          <ul class="list-group">
 	          <center><h5>Feeds</h5><center>
+	          <img alt="image" src="{{ url_for('static',filename='seniors/play.jpeg') }}" style="height:100%;width:100%" data-toggle="modal" data-target="#shortflim">
 	          <iframe src="https://free.timeanddate.com/clock/i8dwux80/n176/tlin/fn6/fs16/fc09f/tc000/ftb/bas2/bat1/bacfff/pa8/tt0/tw1/th1/ta1/tb4" frameborder="0" width="310" height="58"></iframe>
 	           <iframe name="f13895c945d5a1a" data-testid="fb:page Facebook Social Plugin" 
 		   	title="fb:page Facebook Social Plugin" allowtransparency="true" allowfullscreen="true" scrolling="no" 
@@ -90,6 +91,18 @@
 	  </div>
 	</main>
 	
+<!-- Modal for video -->
+<div class="modal fade" id="shortflim" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body"><video style="height:100%;width:100%" controls><source src="{{ url_for('static', filename='shortflim.mp4') }}" type="video/mp4">Your browser unable to play this video.</video></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 	<!-- Optional JavaScript for Bootstrap-->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
