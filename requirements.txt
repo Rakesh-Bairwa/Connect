@@ -5,4 +5,3 @@ email_validator
 Pillow
 flask-bcrypt
 flask-wtf
-gunicorn==20.1.0
