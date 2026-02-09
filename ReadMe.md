@@ -5,8 +5,8 @@ A Flask-based social web application built for the M.Sc. batch (2020–2022) of 
 ## Features
 
 - **Memes / Posts Feed** — Authenticated users can create, update, and delete posts with optional image/GIF/MP4 attachments. All posts are displayed on the home page with author profile picture, username, and date.
-- **Meet Us (Alumni Directory)** — Displays 49 alumni profile cards in a 3-column grid (name, photo, job title, location, about section, LinkedIn contact link) sourced from `linkedinScrapped.csv`.
-- **Memories Gallery** — A photo gallery of 48 batch memory images arranged in rows of 3, each with a Bootstrap modal for full-size viewing. Includes a glowing animated "Memories" heading.
+- **Meet Us (Alumni Directory)** — Displays alumni profile cards in a column grid (name, photo, job title, location, about section, LinkedIn contact link) sourced from `linkedinScrapped.csv`.
+- **Memories Gallery** — A photo gallery of batch memory images arranged in rows, each with a Bootstrap modal for full-size viewing. Includes a glowing animated "Memories" heading.
 - **User Authentication** — Register, login, logout with bcrypt password hashing. Session management via Flask-Login with `login_view` redirect to the login page.
 - **Account Management** — Update username, email, and profile picture. Uploaded profile pictures are resized to 125×125 using Pillow and saved with a random hex filename.
 - **Sidebar Widgets** — Embedded NIT Trichy Facebook page timeline, Twitter/X feed, a timeanddate.com clock widget, and a YouTube video modal (triggered by clicking a thumbnail in the sidebar).
@@ -66,7 +66,7 @@ Entry point. Imports the `app` object from the `project` package and runs the Fl
 
 ### `project/__init__.py`
 App factory (without factory pattern — uses a global `app` object):
-- Creates the Flask app with a hardcoded `SECRET_KEY` and SQLite database URI (`sqlite:///site.db`)
+- Creates the Flask app and SQLite database URI (`sqlite:///site.db`)
 - Initializes `SQLAlchemy`, `Bcrypt`, and `LoginManager` extensions
 - Sets `login_manager.login_view = 'login'` so unauthenticated users are redirected to `/login`
 - Sets `login_manager.login_message_category = 'info'` for Bootstrap-styled flash messages
@@ -111,7 +111,7 @@ Loads `linkedinScrapped.csv` into a list at module level (runs once on startup).
 | Route                    | Function       | Key Behavior |
 |--------------------------|---------------|--------------|
 | `GET /`                  | `home()`       | Queries all posts via `Post.query.all()`, flashes login prompt if unauthenticated |
-| `GET /meet_us`           | `about()`      | Passes CSV data + length to `about.html` for 3-column card rendering |
+| `GET /meet_us`           | `about()`      | Passes CSV data + length to `about.html` for column card rendering |
 | `GET /memories`          | `memories()`   | Renders static gallery page |
 | `GET,POST /register`     | `register()`   | Redirects if already logged in; hashes password with bcrypt; creates User; redirects to login |
 | `GET,POST /login`        | `login()`      | Redirects if already logged in; verifies bcrypt hash; supports `next` query param redirect |
@@ -160,7 +160,7 @@ Custom styles including:
 - `.glow` — CSS keyframe animation for glowing text effect on the memories page heading (white/teal text-shadow pulse)
 
 ### `linkedin.py`
-Fully commented out scraper that was previously used to populate `linkedinScrapped.csv`:
+Scraper that was used to populate `linkedinScrapped.csv`:
 1. Searches Google (10 pages) for LinkedIn profiles matching NIT Trichy + Statistics + Computer Science
 2. Extracts LinkedIn URLs from Google search results using a custom `extract_link()` parser
 3. Logs into LinkedIn via Selenium (Firefox with geckodriver)
@@ -169,7 +169,7 @@ Fully commented out scraper that was previously used to populate `linkedinScrapp
 6. Saves all data to `result.csv` using pandas DataFrame
 
 ### `linkedinScrapped.csv`
-CSV with 49 alumni records and 6 columns: `Full Name`, `Image`, `Title`, `Location`, `About`, `Contact`. Image URLs are mostly LinkedIn CDN links; one entry uses a local path (`/static/seniors/amit_senior_website.jpg`). Some fields are empty where scraping failed.
+CSV with alumni records and 6 columns: `Full Name`, `Image`, `Title`, `Location`, `About`, `Contact`. Image URLs are mostly LinkedIn CDN links; one entry uses a local path (`/static/seniors/amit_senior_website.jpg`). Some fields are empty where scraping failed.
 
 ## Routes Summary
 
@@ -188,20 +188,6 @@ CSV with 49 alumni records and 6 columns: `Full Name`, `Image`, `Title`, `Locati
 | `/post/<id>/delete`            | POST         | Yes           | Delete own post                    |
 
 *`@login_required` is commented out on the new post route — any visitor can create posts if they are logged in (uses `current_user` as author).
-
-## Known Issues / Notes
-
-- **Hardcoded secret key** in `__init__.py` — should be moved to an environment variable for production.
-- **`@login_required` commented out** on `/post/new` — will crash for anonymous users since `current_user` is used as the post author.
-- **Post update clears image** — updating a post without uploading a new image sets `img_path` to `None`, removing the original image reference.
-- **Uploaded files never deleted** — deleting a post or updating a profile picture does not remove the old image file from disk.
-- **`db.create_all()` at module level** in `models.py` — runs on every import; typically should be in a CLI command or app context setup.
-- **LinkedIn CDN image URLs in CSV** — these are time-limited signed URLs that will expire, causing broken images on the Meet Us page.
-- **HTML typo** in `about.html` — `<p">` instead of `<p>` in the third card column.
-- **Forgot password link** on the login page is non-functional (`href="#"`).
-- **`shortflim.mp4`** (~17 MB) exists in static but is unused — the sidebar modal embeds a YouTube video instead.
-- **No pagination** — `Post.query.all()` loads every post on the home page.
-- **`debug=False`** in `main.py` — development server runs without debug mode.
 
 ## Setup & Installation
 
